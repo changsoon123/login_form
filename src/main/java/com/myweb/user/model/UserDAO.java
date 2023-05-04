@@ -42,6 +42,61 @@ public class UserDAO {
 		return dao;
 	}
 	
+	public int userCheck(String id,String pw) {
+			
+		int check = 0;
+	
+		String sql = "SELECT user_pw FROM my_user WHERE user_id=?";
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);){
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String dbPw = rs.getString("user_pw");
+				if(dbPw.equals(pw)) {
+					check = 1;
+				} else {
+					check = 0;
+				}
+			} else {
+				check = -1;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+			
+		
+		
+		return check;
+	}
+	
+	public UserVO getUserInfo(String id) {
+		UserVO user = null;
+		String sql = "SELECT * FROM my_user WHERE user_id = '" + id + "'";
+		
+		try(Connection conn = ds.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()){
+			if(rs.next()) {
+				user = new UserVO(
+							rs.getString("user_id"),
+							rs.getString("user_pw"),
+							rs.getString("user_name"),
+							rs.getString("user_email"),
+							rs.getString("user_address")
+						);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		return user;
+	}
+	
 	////////////////////////////////////////////////////////
 	
 	//회원 중복 여부 확인
@@ -78,5 +133,9 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
+
+	
+
+	
 	
 }
