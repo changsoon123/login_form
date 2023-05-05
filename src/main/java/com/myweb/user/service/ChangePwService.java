@@ -1,10 +1,14 @@
 package com.myweb.user.service;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.myweb.user.model.UserDAO;
+import com.myweb.user.model.UserVO;
 
 public class ChangePwService implements IUserService {
 
@@ -18,9 +22,48 @@ public class ChangePwService implements IUserService {
 		UserDAO dao = UserDAO.getInstance();
 		
 		HttpSession session = request.getSession();
+		UserVO user = (UserVO) session.getAttribute("user");
+		String id = user.getUserId();
 		
 		
 		int result = dao.userCheck(id,oldpw);
+		
+		response.setContentType("text/html; charset=UTF-8");
+		String htmlCode;
+		PrintWriter w;
+		System.out.println(result);
+		System.out.println(id);
+		
+		try {
+			w = response.getWriter();
+			
+		    if (result == 1) {
+		    	 dao.changePassword(id,newpw);
+			        htmlCode = "<script>\r\n"
+			            + "    alert('비밀번호가 정상적으로 변경되었습니다.');\r\n"
+			            + "                location.href='/MyWeb/myPage.user';\r\n"
+			            + "</script>";
+			       
+				    w.print(htmlCode);
+				    w.flush();
+				    w.close();
+		        
+		    } else {
+		    	htmlCode = "<script>\r\n"
+			            + "    alert('현재 비밀번호가 다릅니다.');\r\n"
+			            + "    history.back();\r\n"
+			            + "</script>";
+			   
+				    w.print(htmlCode);
+				    w.flush();
+				    w.close();
+				    return;
+		    	
+		    }
+		   
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
 		
 		/*
 	    1. 폼 데이터 처리 (기존 비번, 변경 비번)

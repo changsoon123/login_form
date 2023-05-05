@@ -134,6 +134,20 @@ public class UserDAO {
 		}
 	}
 
+	public void changePassword(String id, String newPw) {
+	    String sql = "UPDATE my_user SET user_pw=? WHERE user_id=?";
+
+	    try (Connection conn = ds.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);) {
+	        pstmt.setString(1, newPw);
+	        pstmt.setString(2, id);
+	        pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 	
 
 	
