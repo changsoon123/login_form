@@ -31,8 +31,8 @@ public class ChangePwService implements IUserService {
 		response.setContentType("text/html; charset=UTF-8");
 		String htmlCode;
 		PrintWriter w;
-		System.out.println(result);
-		System.out.println(id);
+//		System.out.println(result);
+//		System.out.println(id);
 		
 		try {
 			w = response.getWriter();
@@ -57,7 +57,6 @@ public class ChangePwService implements IUserService {
 				    w.print(htmlCode);
 				    w.flush();
 				    w.close();
-				    return;
 		    	
 		    }
 		   
