@@ -1,0 +1,8 @@
+nas -> iptime
+
+http://ictcon.ipdisk.co.kr    포트  9000
+
+lee / ictedu1004
+
+강사님 깃
+https://github.com/LeeKM321

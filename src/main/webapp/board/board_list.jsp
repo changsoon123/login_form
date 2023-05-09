@@ -25,7 +25,12 @@
 </head>
 <body>
 
-	
+	<c:if test="${user == null}">
+	<script>
+		alert('회원만 이용 가능한 게시판 입니다. 로그인 해 주세요.');
+		location.href="/MyWeb/loginPage.user";
+	</script>
+	</c:if>
 
 	<jsp:include page="../include/header.jsp"/>
 
@@ -55,8 +60,12 @@
 				<tr>
 				 <td>${b.boardId}</td>
 				 <td>${b.writer}</td>
-				 <td>${b.title}</td>
-				 <td>${b.regDate}</td>
+				 <td><a href="/MyWeb/content.board?bId=${b.boardId}">${b.title}</a></td>
+				 <td>
+				 	<fmt:parseDate value="${b.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDateTime" type="both" />
+                    <fmt:formatDate value="${parsedDateTime}" pattern="yyyy년 MM월 dd일 HH시 mm분" />
+                    
+				 </td>
 				 <td>${b.hit}</td>
 				</tr>
 				</c:forEach>
