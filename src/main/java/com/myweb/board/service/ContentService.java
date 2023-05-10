@@ -26,26 +26,22 @@ public class ContentService implements IBoardService {
          현재 글 번호와 일치하는 쿠키가 존재한다면 조회수를 올려주지 않을 겁니다.
          현재 글 번호와 일치하는 쿠키가 없다면 조회수를 올려주도록 하겠습니다.  
         */
-		Cookie cookie = new Cookie(request.getParameter("bId"),request.getParameter("bId"));
-
-		// 쿠키 유효 시간 설정 (1시간)
-		cookie.setMaxAge(15);
-
-		// 응답 헤더에 쿠키 추가
-		response.addCookie(cookie);
-
 		
-		Cookie[] cookies = request.getCookies();
+		String bNum = request.getParameter("bId");
 		boolean flag = false;
+		Cookie[] cookies = request.getCookies();
 
 		if(cookies != null) {
     		for(Cookie c : cookies) {
-    			if(c.getName().equals(request.getParameter("bId"))) {
+    			if(c.getName().equals(bNum)) {
     				flag = true;
     				break;
     			}
     		}
     		if(!flag) {
+    			Cookie hitCoo = new Cookie(bNum,bNum);
+    			hitCoo.setMaxAge(15);
+    			response.addCookie(hitCoo);
     			dao.upHit(bId);
     		}
     	}
